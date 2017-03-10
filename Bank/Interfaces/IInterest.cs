@@ -2,6 +2,6 @@
 {
     public interface IInterest
     {
-        
+        double ChargeInterest(double amount);
     }
 }

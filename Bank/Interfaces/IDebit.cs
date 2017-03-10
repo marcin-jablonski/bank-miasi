@@ -2,6 +2,6 @@
 {
     public interface IDebit
     {
-        
+        void ReduceDebit(double amount);
     }
 }
