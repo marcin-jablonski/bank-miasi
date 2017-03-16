@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Bank
+﻿namespace Bank
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+            var bank = new Bank();
+            //Do stuff
         }
     }
 }

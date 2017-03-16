@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Bank.Enums;
 using Bank.Exceptions;
-using Bank.Interests;
 using Bank.Interfaces;
+using Bank.Mechanisms.Interests;
 using Bank.Models;
 
 namespace Bank.Products

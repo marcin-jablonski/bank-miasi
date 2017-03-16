@@ -1,6 +1,6 @@
 using Bank.Interfaces;
 
-namespace Bank.Interests
+namespace Bank.Mechanisms.Interests
 {
     public class NoInterest : IInterest
     {

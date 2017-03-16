@@ -40,6 +40,7 @@ namespace Bank
         public void CreateReport(Func<IBankProduct, bool> filter)
         {
             Reporter.CreateReport(Products, filter);
+            History.Add(new Operation {Type = OperationType.ReportCreation, Date = DateTime.Now, Description = "Report"});
         }
 
         public IBankProduct GetBankProduct(int productId)
