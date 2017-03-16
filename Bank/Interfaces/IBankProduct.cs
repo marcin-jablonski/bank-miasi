@@ -11,6 +11,6 @@
         void CancelDeposit();
         void CreateCredit();
         void PayCreditInstallment(double amount);
-        void CreateDebit();
+        void CreateDebit(IDebit debit);
     }
 }

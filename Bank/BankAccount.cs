@@ -96,9 +96,9 @@ namespace Bank
             throw new System.NotImplementedException();
         }
 
-        public void CreateDebit()
+        public void CreateDebit(IDebit debit)
         {
-            throw new System.NotImplementedException();
+            Debit = debit;
         }
     }
 }
