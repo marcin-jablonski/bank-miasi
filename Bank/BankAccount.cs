@@ -6,11 +6,22 @@ namespace Bank
 {
     public class BankAccount : IBankProduct
     {
+        private int _id;
+
+        private int _ownerId;
+
         private IInterest Interest;
 
         private IDebit Debit;
 
         private double _amount;
+
+        public BankAccount(int ownerId, int id)
+        {
+            _ownerId = ownerId;
+            _id = id;
+            _amount = 0;
+        }
 
         public void Deposit(double amount)
         {
@@ -66,9 +77,9 @@ namespace Bank
             destination.Deposit(amount);
         }
 
-        public void CreateInterest()
+        public void CreateInterest(IInterest interest)
         {
-            throw new System.NotImplementedException();
+            Interest = interest;
         }
 
         public void ChangeInterestSystem()
@@ -99,6 +110,16 @@ namespace Bank
         public void CreateDebit(IDebit debit)
         {
             Debit = debit;
+        }
+
+        public int GetId()
+        {
+            return _id;
+        }
+
+        public int GetOwnerId()
+        {
+            return _ownerId;
         }
     }
 }

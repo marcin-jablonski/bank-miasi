@@ -8,7 +8,7 @@ namespace Bank
 {
     class Reporter : IReporter
     {
-        public List<BankAccount> CreateReport(List<BankAccount> products, Func<BankAccount, bool> filter)
+        public List<IBankProduct> CreateReport(List<IBankProduct> products, Func<IBankProduct, bool> filter)
         {
             return products.Where(filter).ToList();
         }
