@@ -1,4 +1,5 @@
-﻿using Bank.Exceptions;
+﻿using System;
+using Bank.Exceptions;
 using Bank.Interfaces;
 
 namespace Bank
@@ -15,10 +16,16 @@ namespace Bank
         {
             if (Debit != null)
                 _amount += amount;
-            else
+            else if (Debit.GetUnpaidDebit() >= 0)
             {
-                //TODO: check if there is anything to reduce
-                Debit.ReduceDebit(amount);
+                if(Debit.GetUnpaidDebit() >= amount)
+                    Debit.ReduceDebit(amount);
+                else
+                {
+                    var toDeposit = amount - Debit.GetUnpaidDebit();
+                    Debit.ReduceDebit(Debit.GetUnpaidDebit());
+                    _amount += toDeposit;
+                }
             }
         }
 
@@ -28,9 +35,12 @@ namespace Bank
                 _amount -= amount;
             else if (Debit != null)
             {
-                //TODO: partial debit/account state withdraw
-                if(Debit.GetAvailableDebit() >= amount)
-                    Debit.IncreaseDebit(amount);
+                var toGetFromDebit = amount - _amount;
+                if (Debit.GetAvailableDebit() >= toGetFromDebit)
+                {
+                    _amount = 0;
+                    Debit.IncreaseDebit(toGetFromDebit);
+                }
                 else
                 {
                     throw new NotEnoughFundsException();
@@ -42,9 +52,18 @@ namespace Bank
             }
         }
 
-        public void Transfer(double amount, int destinationId)
+        public void Transfer(double amount, IBankProduct destination)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                Withdraw(amount);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            destination.Deposit(amount);
         }
 
         public void CreateInterest()

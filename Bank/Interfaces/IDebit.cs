@@ -5,5 +5,7 @@
         void ReduceDebit(double amount);
         void IncreaseDebit(double amount);
         double GetAvailableDebit();
+        double GetLimit();
+        double GetUnpaidDebit();
     }
 }

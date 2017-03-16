@@ -4,7 +4,7 @@
     {
         void Deposit(double amount);
         void Withdraw(double amount);
-        void Transfer(double amount, int destinationId);
+        void Transfer(double amount, IBankProduct destination);
         void CreateInterest();
         void ChangeInterestSystem();
         void ChargeInterest();
