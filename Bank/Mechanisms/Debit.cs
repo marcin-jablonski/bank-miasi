@@ -1,7 +1,7 @@
 ﻿using System;
 using Bank.Interfaces;
 
-namespace Bank
+namespace Bank.Mechanisms
 {
     public class Debit : IDebit
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bank.Enums;
+using Bank.Models;
 
 namespace Bank.Interfaces
 {
@@ -10,5 +11,6 @@ namespace Bank.Interfaces
         void CreateReport(Func<IBankProduct, bool> filter);
         IBankProduct GetBankProduct(int productId);
         List<IBankProduct> GetProductsByOwner(int ownerId);
+        List<Operation> GetHistory();
     }
 }

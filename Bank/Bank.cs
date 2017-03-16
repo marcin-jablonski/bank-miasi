@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Bank.Enums;
 using Bank.Interfaces;
+using Bank.Mechanisms;
+using Bank.Models;
+using Bank.Products;
 
 namespace Bank
 {
@@ -12,9 +15,12 @@ namespace Bank
 
         private IReporter Reporter;
 
+        private List<Operation> History;
+
         public Bank()
         {
             Products = new List<IBankProduct>();
+            History = new List<Operation>();
             Reporter = new Reporter();
         }
 
@@ -24,7 +30,7 @@ namespace Bank
             switch (productType)
             {
                 case BankProductType.Account:
-                    newProduct = new BankAccount(ownerId, Products.Max(x => x.GetId()) + 1);
+                    newProduct = new BankAccount(this, ownerId, Products.Max(x => x.GetId()) + 1);
                     break;
             }
             Products.Add(newProduct);
@@ -44,6 +50,11 @@ namespace Bank
         public List<IBankProduct> GetProductsByOwner(int ownerId)
         {
             return Products.Where(x => x.GetOwnerId() == ownerId).ToList();
+        }
+
+        public List<Operation> GetHistory()
+        {
+            return History;
         }
     }
 }
