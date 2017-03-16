@@ -1,10 +1,11 @@
-﻿using System.Linq;
-using Bank.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Bank.Interfaces
 {
     public interface IReporter
     {
-        void CreateReport(Query query);
+        List<BankAccount> CreateReport(List<BankAccount> products, Func<BankAccount, bool> filter);
     }
 }
