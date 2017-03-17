@@ -36,7 +36,7 @@ namespace Bank.Products
 
         public void Deposit(double amount)
         {
-            if (Debit != null)
+            if (Debit == null)
                 _amount += amount;
             else if (Debit.GetUnpaidDebit() >= 0)
             {
@@ -141,6 +141,11 @@ namespace Bank.Products
         public int GetOwnerId()
         {
             return _ownerId;
+        }
+
+        public double GetAccountState()
+        {
+            return _amount;
         }
     }
 }
