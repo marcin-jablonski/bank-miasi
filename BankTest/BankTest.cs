@@ -1,4 +1,6 @@
+using System;
 using Bank.Enums;
+using Bank.Interfaces;
 using Xunit;
 
 namespace BankTest
@@ -11,31 +13,55 @@ namespace BankTest
         }
 
         private readonly Bank.Bank _bank;
-        private readonly int _expectedHistorySize = 1;
-        private readonly int _ownerId = 2;
+        private const int ExpectedHistorySize = 1;
+        private const int FirstOwnerId = 1;
+        private const int SecondOwnerId = 2;
 
         [Fact]
         public void ShouldCreateBankProduct()
         {
-            Assert.NotNull(_bank.CreateBankProduct(BankProductType.Account, 1));
+            var account = _bank.CreateBankProduct(BankProductType.Account, FirstOwnerId);
+            Assert.NotNull(account);
+            Assert.Equal(account.GetOwnerId(), FirstOwnerId);
         }
 
         [Fact]
-        public void ShouldUpdateHistoryAfterReport()
+        public void ShouldReturnBankProductForId()
         {
-            _bank.CreateReport(bankProduct => true);
-            Assert.Equal(_expectedHistorySize, _bank.GetHistory().Count);
+            _bank.CreateBankProduct(BankProductType.Account, FirstOwnerId);
+            var product = _bank.GetBankProduct(1);
+            Assert.NotNull(product);
+            Assert.Equal(1, product.GetId());
         }
 
         [Fact]
         public void ShouldReturnProductsForOwner()
         {
             for (var i = 0; i < 5; i++)
-            {
-                _bank.CreateBankProduct(BankProductType.Account, _ownerId);
-            }
+                _bank.CreateBankProduct(BankProductType.Account, SecondOwnerId);
+            var products = _bank.GetProductsByOwner(SecondOwnerId);
+            Assert.NotNull(products);
+            Assert.Equal(5, products.Count);
+        }
 
-            Assert.Equal(5, _bank.GetProductsByOwner(_ownerId).Count);
+        [Fact]
+        public void ShouldThrowExceptionOnGetProductWithEmptyBank()
+        {
+            Assert.Throws(typeof(InvalidOperationException), () => _bank.GetBankProduct(1));
+        }
+
+        [Fact]
+        public void ShouldReturnEmptyListOnNonExistingOwnerId()
+        {
+            var products = _bank.GetProductsByOwner(FirstOwnerId);
+            Assert.Equal(0, products.Count);
+        }
+
+        [Fact]
+        public void ShouldUpdateHistoryAfterReport()
+        {
+            _bank.CreateReport(bankProduct => true);
+            Assert.Equal(ExpectedHistorySize, _bank.GetHistory().Count);
         }
     }
 }
