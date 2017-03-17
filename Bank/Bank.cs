@@ -30,7 +30,14 @@ namespace Bank
             switch (productType)
             {
                 case BankProductType.Account:
-                    newProduct = new BankAccount(this, ownerId, Products.Max(x => x.GetId()) + 1);
+                    if (Products.Count.Equals(0))
+                    {
+                        newProduct = new BankAccount(this, ownerId, 1);
+                    }
+                    else
+                    {
+                        newProduct = new BankAccount(this, ownerId, Products.Max(x => x.GetId()) + 1);
+                    }
                     break;
             }
             Products.Add(newProduct);
