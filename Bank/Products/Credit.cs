@@ -24,10 +24,9 @@ namespace Bank.Products
         {
             ChargeInterest();
             _account.Withdraw(_amount);
-
+            _amount = 0;
             History.Add(new Operation { Type = OperationType.CreditInstallmentPayment, Date = DateTime.Now, Description = "Installment payment for credit " + GetId() });
             Bank.GetHistory().Add(new Operation { Type = OperationType.CreditInstallmentPayment, Date = DateTime.Now, Description = "Installment payment for credit " + GetId() });
-
         }
     }
 }
