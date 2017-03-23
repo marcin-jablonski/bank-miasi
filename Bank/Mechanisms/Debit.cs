@@ -1,5 +1,6 @@
 ﻿using System;
 using Bank.Interfaces;
+using Bank.Exceptions;
 
 namespace Bank.Mechanisms
 {
@@ -21,7 +22,7 @@ namespace Bank.Mechanisms
                 _currentDebit -= amount;
             else
             {
-                throw new Exception();
+                throw new IllegalOperationException();
             }
         }
 
@@ -29,7 +30,7 @@ namespace Bank.Mechanisms
         {
             var newDebit = _currentDebit += amount;
             if (newDebit >= _limit)
-                throw new Exception();
+                throw new IllegalOperationException();
             else _currentDebit = newDebit;
         }
 

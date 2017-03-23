@@ -36,6 +36,8 @@ namespace Bank.Products
 
         public void Deposit(double amount)
         {
+            if (amount <= 0) throw new IllegalOperationException();
+
             if (Debit == null)
                 _amount += amount;
             else if (Debit.GetUnpaidDebit() >= 0)
@@ -56,6 +58,8 @@ namespace Bank.Products
 
         public void Withdraw(double amount)
         {
+            if (amount <= 0) throw new IllegalOperationException();
+
             if (_amount >= amount)
                 _amount -= amount;
             else if (Debit != null)
