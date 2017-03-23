@@ -38,7 +38,7 @@ namespace Bank.Products
         {
             if (amount <= 0) throw new IllegalOperationException();
 
-            if (Debit == null)
+            if (Debit == null || (Debit != null && Debit.GetUnpaidDebit() == 0))
                 _amount += amount;
             else if (Debit.GetUnpaidDebit() >= 0)
             {
