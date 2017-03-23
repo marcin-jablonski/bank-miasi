@@ -5,6 +5,6 @@ namespace Bank.Interfaces
 {
     public interface IReporter
     {
-        List<IBankProduct> CreateReport(List<IBankProduct> products, Func<IBankProduct, bool> filter);
+        List<BankProduct> CreateReport(List<BankProduct> products, Func<BankProduct, bool> filter);
     }
 }

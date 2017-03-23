@@ -1,62 +1,33 @@
-﻿using Bank.Interfaces;
+﻿using Bank.Enums;
+using Bank.Interfaces;
+using Bank.Models;
+using System;
 
 namespace Bank.Products
 {
-    public class Credit : IBankProduct
+    public class Credit : BankProduct
     {
-        public void Deposit(double amount)
+        private BankAccount _account;
+
+        public Credit(Bank bank, BankAccount account) : base(bank, account.GetOwnerId())
         {
-            throw new System.NotImplementedException();
+            _account = account;
         }
 
-        public void Withdraw(double amount)
+        public void GetMoney(double amount)
         {
-            throw new System.NotImplementedException();
+            _amount += amount;
+            _account.Deposit(amount);
         }
 
-        public void Transfer(double amount, IBankProduct destination)
+        public void PayCreditInstallment()
         {
-            throw new System.NotImplementedException();
-        }
+            ChargeInterest();
+            _account.Withdraw(_amount);
 
-        public void ChangeInterestSystem(IInterest interest)
-        {
-            throw new System.NotImplementedException();
-        }
+            History.Add(new Operation { Type = OperationType.CreditInstallmentPayment, Date = DateTime.Now, Description = "Installment payment for credit " + GetId() });
+            Bank.GetHistory().Add(new Operation { Type = OperationType.CreditInstallmentPayment, Date = DateTime.Now, Description = "Installment payment for credit " + GetId() });
 
-        public void ChargeInterest()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void CancelDeposit()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void CreateCredit()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void PayCreditInstallment(double amount)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void CreateDebit(IDebit debit)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public int GetId()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public int GetOwnerId()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

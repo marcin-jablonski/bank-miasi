@@ -3,7 +3,7 @@ using Bank.Interfaces;
 
 namespace Bank.Mechanisms
 {
-    public class Debit : IDebit
+    public class Debit
     {
         private double _limit;
 
