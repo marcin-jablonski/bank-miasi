@@ -29,7 +29,7 @@ namespace Bank
             Products.Add(newProduct);
             if(newProduct.GetType() == typeof (Deposit))
             {
-                History.Add(new Operation { Date = DateTime.Now, Type = OperationType.DepositCreation, Description = "Deposit of " + newProduct.GetAmount() + " created for owner " + newProduct.GetOwnerId() });
+                History.Add(new Operation { Date = DateTime.Now, Type = OperationType.DepositCreation, Description = "Deposit of " + newProduct.GetAccountState() + " created for owner " + newProduct.GetOwnerId() });
             }
             else if(newProduct.GetType() == typeof (Credit))
             {

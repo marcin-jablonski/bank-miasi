@@ -31,7 +31,7 @@ namespace Bank.Interfaces
             Interest = new NoInterest();
         }
 
-        public double GetAmount()
+        public double GetAccountState()
         {
             return _amount;
         }
