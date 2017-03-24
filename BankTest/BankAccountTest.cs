@@ -1,27 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Bank.Exceptions;
+﻿using Bank.Exceptions;
+using Bank.Products;
 using Xunit;
 
 namespace BankTest
 {
     public class BankAccountTest
     {
-        private Bank.Bank _bank = null;
-        private Bank.Bank _bank2 = null;
-        private Bank.Products.BankAccount _bankAccount = null;
-        private Bank.Products.BankAccount _bankAccount2 = null;
+        public BankAccountTest()
+        {
+            var bank = new Bank.Bank();
+            _bankAccount = new BankAccount(bank, 0);
+            _bankAccount2 = new BankAccount(bank, 1);
+        }
+
+        private readonly BankAccount _bankAccount;
+        private readonly BankAccount _bankAccount2;
         private const double ToWithdraw = 40.31;
         private const double DepositAmount = 100.52;
         private const double AmountToTransfer = 23.11;
 
-        public BankAccountTest()
+        [Fact]
+        public void ChargeInterest()
         {
-            _bank = new Bank.Bank();
-            _bank2 = new Bank.Bank();
-            _bankAccount = new Bank.Products.BankAccount(_bank, 0);
-            _bankAccount2 = new Bank.Products.BankAccount(_bank, 1);
+            _bankAccount.Deposit(DepositAmount);
+            _bankAccount.ChargeInterest();
+            Assert.Equal(DepositAmount, _bankAccount.GetAccountState());
         }
 
         [Fact]
@@ -42,15 +45,6 @@ namespace BankTest
         public void ShouldNotDeposit()
         {
             Assert.Throws(typeof(IllegalOperationException), () => _bankAccount.Deposit(-DepositAmount));
-        }
-
-
-        [Fact]
-        public void ShouldWithdraw()
-        {
-            _bankAccount.Deposit(DepositAmount);
-            _bankAccount.Withdraw(ToWithdraw);
-            Assert.Equal(DepositAmount - ToWithdraw, _bankAccount.GetAccountState());
         }
 
         [Fact]
@@ -76,16 +70,13 @@ namespace BankTest
             Assert.Equal(AmountToTransfer, _bankAccount2.GetAccountState());
         }
 
+
         [Fact]
-        public void ChargeInterest()
+        public void ShouldWithdraw()
         {
             _bankAccount.Deposit(DepositAmount);
-            _bankAccount.ChargeInterest();
-            Assert.Equal(DepositAmount, _bankAccount.GetAccountState());
+            _bankAccount.Withdraw(ToWithdraw);
+            Assert.Equal(DepositAmount - ToWithdraw, _bankAccount.GetAccountState());
         }
-
-
-
-
     }
 }
