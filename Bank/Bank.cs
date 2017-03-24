@@ -9,9 +9,9 @@ using Bank.Products;
 
 namespace Bank
 {
-    public class Bank : IBank
+    public class Bank
     {
-        private List<IBankProduct> Products;
+        private List<BankProduct> Products;
 
         private IReporter Reporter;
 
@@ -19,43 +19,37 @@ namespace Bank
 
         public Bank()
         {
-            Products = new List<IBankProduct>();
+            Products = new List<BankProduct>();
             History = new List<Operation>();
             Reporter = new Reporter();
         }
 
-        public IBankProduct CreateBankProduct(BankProductType productType, int ownerId)
+        public BankProduct CreateBankProduct(BankProduct newProduct)
         {
-            IBankProduct newProduct = null;
-            switch (productType)
-            {
-                case BankProductType.Account:
-                    if (Products.Count.Equals(0))
-                    {
-                        newProduct = new BankAccount(this, ownerId, 1);
-                    }
-                    else
-                    {
-                        newProduct = new BankAccount(this, ownerId, Products.Max(x => x.GetId()) + 1);
-                    }
-                    break;
-            }
             Products.Add(newProduct);
+            if(newProduct.GetType() == typeof (Deposit))
+            {
+                History.Add(new Operation { Date = DateTime.Now, Type = OperationType.DepositCreation, Description = "Deposit of " + newProduct.GetAccountState() + " created for owner " + newProduct.GetOwnerId() });
+            }
+            else if(newProduct.GetType() == typeof (Credit))
+            {
+                History.Add(new Operation { Date = DateTime.Now, Type = OperationType.CreditCreation, Description = "Credit created for owner " + newProduct.GetOwnerId() });
+            }
             return newProduct;
         }
 
-        public void CreateReport(Func<IBankProduct, bool> filter)
+        public void CreateReport(Func<BankProduct, bool> filter)
         {
             Reporter.CreateReport(Products, filter);
             History.Add(new Operation {Type = OperationType.ReportCreation, Date = DateTime.Now, Description = "Report"});
         }
 
-        public IBankProduct GetBankProduct(int productId)
+        public BankProduct GetBankProduct(int productId)
         {
             return Products.First(x => x.GetId() == productId);
         }
 
-        public List<IBankProduct> GetProductsByOwner(int ownerId)
+        public List<BankProduct> GetProductsByOwner(int ownerId)
         {
             return Products.Where(x => x.GetOwnerId() == ownerId).ToList();
         }
@@ -63,6 +57,11 @@ namespace Bank
         public List<Operation> GetHistory()
         {
             return History;
+        }
+
+        public List<BankProduct> GetProducts()
+        {
+            return Products;
         }
     }
 }

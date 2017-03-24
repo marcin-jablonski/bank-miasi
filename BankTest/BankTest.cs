@@ -1,7 +1,6 @@
 using System;
-using Bank.Enums;
-using Bank.Interfaces;
 using Xunit;
+using Bank.Products;
 
 namespace BankTest
 {
@@ -20,7 +19,8 @@ namespace BankTest
         [Fact]
         public void ShouldCreateBankProduct()
         {
-            var account = _bank.CreateBankProduct(BankProductType.Account, FirstOwnerId);
+            var bankProduct = new BankAccount(_bank, FirstOwnerId);
+            var account = _bank.CreateBankProduct(bankProduct);
             Assert.NotNull(account);
             Assert.Equal(account.GetOwnerId(), FirstOwnerId);
         }
@@ -28,7 +28,8 @@ namespace BankTest
         [Fact]
         public void ShouldReturnBankProductForId()
         {
-            _bank.CreateBankProduct(BankProductType.Account, FirstOwnerId);
+            var bankProduct = new BankAccount(_bank, FirstOwnerId);
+            _bank.CreateBankProduct(bankProduct);
             var product = _bank.GetBankProduct(1);
             Assert.NotNull(product);
             Assert.Equal(1, product.GetId());
@@ -37,8 +38,9 @@ namespace BankTest
         [Fact]
         public void ShouldReturnProductsForOwner()
         {
+            var bankProduct = new BankAccount(_bank, SecondOwnerId);
             for (var i = 0; i < 5; i++)
-                _bank.CreateBankProduct(BankProductType.Account, SecondOwnerId);
+                _bank.CreateBankProduct(bankProduct);
             var products = _bank.GetProductsByOwner(SecondOwnerId);
             Assert.NotNull(products);
             Assert.Equal(5, products.Count);

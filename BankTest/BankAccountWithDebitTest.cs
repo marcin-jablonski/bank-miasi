@@ -19,7 +19,7 @@ namespace BankTest
         public BankAccountWithDebitTest()
         {
             _bank = new Bank.Bank();
-            _bankAccount = new Bank.Products.BankAccount(_bank, 0, 0);
+            _bankAccount = new Bank.Products.BankAccount(_bank, 0);
             _debit = new Bank.Mechanisms.Debit(DebitLimit);
             _bankAccount.CreateDebit(_debit);
         }

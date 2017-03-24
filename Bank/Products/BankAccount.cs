@@ -1,37 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using Bank.Enums;
 using Bank.Exceptions;
 using Bank.Interfaces;
-using Bank.Mechanisms.Interests;
 using Bank.Models;
+using Bank.Mechanisms;
 
 namespace Bank.Products
 {
-    public class BankAccount : IBankProduct
+    public class BankAccount : BankProduct
     {
-        private int _id;
+        private Debit Debit;
 
-        private int _ownerId;
-
-        private List<Operation> History;
-
-        private IBank Bank;
-
-        private IInterest Interest;
-
-        private IDebit Debit;
-
-        private double _amount;
-
-        public BankAccount(IBank bank, int ownerId, int id)
+        public BankAccount(Bank bank, int ownerId) : base(bank, ownerId)
         {
-            Bank = bank;
-            _ownerId = ownerId;
-            _id = id;
-            _amount = 0;
-            History = new List<Operation>();
-            Interest = new NoInterest();
+            
         }
 
         public void Deposit(double amount)
@@ -84,7 +66,7 @@ namespace Bank.Products
             Bank.GetHistory().Add(new Operation { Type = OperationType.Withdraw, Date = DateTime.Now, Description = amount.ToString() });
         }
 
-        public void Transfer(double amount, IBankProduct destination)
+        public void Transfer(double amount, BankAccount destination)
         {
             try
             {
@@ -95,61 +77,16 @@ namespace Bank.Products
                 throw;
             }
 
-            destination.Deposit(amount);
+            destination.Deposit(amount); // change possibly
             History.Add(new Operation { Type = OperationType.Transfer, Date = DateTime.Now, Description = amount + " to " + destination.GetId() });
             Bank.GetHistory().Add(new Operation { Type = OperationType.Transfer, Date = DateTime.Now, Description = amount + " to " + destination.GetId() });
         }
 
-        public void ChangeInterestSystem(IInterest interest)
-        {
-            Interest = interest;
-            History.Add(new Operation { Type = OperationType.InterestTypeChange, Date = DateTime.Now, Description = interest.GetType().Name });
-            Bank.GetHistory().Add(new Operation { Type = OperationType.InterestTypeChange, Date = DateTime.Now, Description = interest.GetType().Name });
-        }
-
-        public void ChargeInterest()
-        {
-            var oldAmount = _amount;
-            _amount = Interest.ChargeInterest(_amount);
-            History.Add(new Operation { Type = OperationType.InterestCharge, Date = DateTime.Now, Description =  (_amount - oldAmount).ToString()});
-            Bank.GetHistory().Add(new Operation { Type = OperationType.InterestCharge, Date = DateTime.Now, Description = (_amount - oldAmount).ToString() });
-        }
-
-        public void CancelDeposit()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CreateCredit()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void PayCreditInstallment(double amount)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CreateDebit(IDebit debit)
+        public void CreateDebit(Debit debit)
         {
             Debit = debit;
             History.Add(new Operation { Type = OperationType.DebitCreation, Date = DateTime.Now, Description = debit.GetLimit().ToString() });
             Bank.GetHistory().Add(new Operation { Type = OperationType.DebitCreation, Date = DateTime.Now, Description = debit.GetLimit().ToString() });
-        }
-
-        public int GetId()
-        {
-            return _id;
-        }
-
-        public int GetOwnerId()
-        {
-            return _ownerId;
-        }
-
-        public double GetAccountState()
-        {
-            return _amount;
         }
     }
 }

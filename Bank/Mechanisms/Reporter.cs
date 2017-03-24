@@ -7,7 +7,7 @@ namespace Bank.Mechanisms
 {
     class Reporter : IReporter
     {
-        public List<IBankProduct> CreateReport(List<IBankProduct> products, Func<IBankProduct, bool> filter)
+        public List<BankProduct> CreateReport(List<BankProduct> products, Func<BankProduct, bool> filter)
         {
             return products.Where(filter).ToList();
         }

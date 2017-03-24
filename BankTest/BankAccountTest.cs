@@ -20,8 +20,8 @@ namespace BankTest
         {
             _bank = new Bank.Bank();
             _bank2 = new Bank.Bank();
-            _bankAccount = new Bank.Products.BankAccount(_bank, 0, 0);
-            _bankAccount2 = new Bank.Products.BankAccount(_bank, 1, 1);
+            _bankAccount = new Bank.Products.BankAccount(_bank, 0);
+            _bankAccount2 = new Bank.Products.BankAccount(_bank, 1);
         }
 
         [Fact]
