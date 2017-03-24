@@ -1,39 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Bank.Mechanisms.Interests;
+using System;
 using Xunit;
 
 namespace BankTest
 {
     public class DepositTests
     {
-        private Bank.Bank _bank;
-        private Bank.Products.BankAccount _account;
-        private Bank.Products.Deposit _deposit;
-        private int _ownerId;
-        private double _depositAmount;
-        private DateTime _depositEndDate;
+        private readonly Bank.Bank _bank;
+        private readonly Bank.Products.BankAccount _account;
 
         public DepositTests()
         {
-            _ownerId = 1;
-            _depositAmount = 2000;
-            _depositEndDate = DateTime.Today + TimeSpan.FromDays(1);
+            const int ownerId = 1;
             _bank = new Bank.Bank();
-            _account = new Bank.Products.BankAccount(_bank, _ownerId);
+            _account = new Bank.Products.BankAccount(_bank, ownerId);
             _bank.CreateBankProduct(_account);
-            _deposit = new Bank.Products.Deposit(_bank, _account, _depositEndDate, _depositAmount);
-            _bank.CreateBankProduct(_deposit);
+            
         }
 
         [Fact]
         public void ShouldGetMoneyWhenCancelled()
         {
-            _deposit.CancelDeposit();
+            var depositAmount = 2000;
+            var depositEndDate = DateTime.Today + TimeSpan.FromDays(1);
+            var deposit = new Bank.Products.Deposit(_bank, _account, depositEndDate, depositAmount);
+            _bank.CreateBankProduct(deposit);
 
-            Assert.Equal(_depositAmount, _account.GetAccountState());
+            deposit.CancelDeposit();
+
+            Assert.Equal(depositAmount, _account.GetAccountState());
         }
 
-        //add interests systems to check if works
+        [Fact]
+        public void ShouldGetMoneyWithoutInterests()
+        {
+            const int depositAmount = 2000;
+            var depositEndDate = DateTime.Today + TimeSpan.FromDays(1);
+            var deposit = new Bank.Products.Deposit(_bank, _account, depositEndDate, depositAmount);
+            _bank.CreateBankProduct(deposit);
+
+            deposit.ChangeInterestSystem(new _5PercentInterest());
+            deposit.CancelDeposit();
+
+            Assert.Equal(depositAmount, _account.GetAccountState());
+        }
+
+        [Fact]
+        public void ShouldGetMoneyWithInterests()
+        {
+            const int depositAmount = 2000;
+            var depositEndDate = DateTime.Today - TimeSpan.FromDays(1);
+            var deposit = new Bank.Products.Deposit(_bank, _account, depositEndDate, depositAmount);
+            _bank.CreateBankProduct(deposit);
+
+            deposit.ChangeInterestSystem(new _5PercentInterest());
+            deposit.CancelDeposit();
+            
+            Assert.Equal(depositAmount*1.05, _account.GetAccountState());
+        }
     }
 }
