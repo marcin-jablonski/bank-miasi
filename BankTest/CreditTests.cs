@@ -1,31 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Bank.Exceptions;
+using Bank.Products;
 using Xunit;
 
 namespace BankTest
 {
     public class CreditTests
     {
-        private Bank.Bank _bank;
-        private Bank.Products.BankAccount _account;
-        private Bank.Products.Credit _credit;
-        private int _ownerId;
-
         public CreditTests()
         {
-            _ownerId = 1;
-            _bank = new Bank.Bank();
-            _account = new Bank.Products.BankAccount(_bank, _ownerId);
-            _bank.CreateBankProduct(_account);
-            _credit = new Bank.Products.Credit(_bank, _account);
-            _bank.CreateBankProduct(_credit);
+            const int ownerId = 1;
+            var bank = new Bank.Bank();
+            _account = new BankAccount(bank, ownerId);
+            bank.CreateBankProduct(_account);
+            _credit = new Credit(bank, _account);
+            bank.CreateBankProduct(_credit);
         }
-        
+
+        private readonly BankAccount _account;
+        private readonly Credit _credit;
+
         [Fact]
         public void ShouldGetMoneyFromCreditAccount()
         {
-            var creditAmount = 200;
+            const int creditAmount = 200;
             _credit.GetMoney(creditAmount);
 
             Assert.Equal(200, _credit.GetAccountState());
@@ -35,8 +32,8 @@ namespace BankTest
         [Fact]
         public void ShouldPayInstallment()
         {
-            var accountState = 2000;
-            var creditAmount = 500;
+            const int accountState = 2000;
+            const int creditAmount = 500;
             _account.Deposit(accountState);
             _credit.GetMoney(creditAmount);
 
@@ -46,6 +43,14 @@ namespace BankTest
             Assert.Equal(0, _credit.GetAccountState());
         }
 
-        //test for not enough funds to pay installment
+        [Fact]
+        public void ShouldNotPayInstallmentDueToInsufficientFunds()
+        {
+            const int creditAmount = 500;
+            _credit.GetMoney(creditAmount);
+            _account.Withdraw(350);
+
+            Assert.Throws(typeof (NotEnoughFundsException), () => _credit.PayCreditInstallment());
+        }
     }
 }
