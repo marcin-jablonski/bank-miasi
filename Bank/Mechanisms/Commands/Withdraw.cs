@@ -23,15 +23,15 @@ namespace Bank.Mechanisms.Commands
         {
             if (_amount <= 0) throw new IllegalOperationException();
 
-            if (_amount >= _amount)
+            if (_account.GetAccountState() >= _amount)
                 _amount -= _amount;
-            else if (Debit != null)
+            else if (_account.Debit != null)
             {
                 var toGetFromDebit = _amount - _amount;
-                if (Debit.GetAvailableDebit() >= toGetFromDebit)
+                if (_account.Debit.GetAvailableDebit() >= toGetFromDebit)
                 {
                     _amount = 0;
-                    Debit.IncreaseDebit(toGetFromDebit);
+                    _account.Debit.IncreaseDebit(toGetFromDebit);
                 }
                 else
                 {
@@ -43,19 +43,7 @@ namespace Bank.Mechanisms.Commands
                 throw new NotEnoughFundsException();
             }
 
-            History.Add(new Operation
-            {
-                Type = OperationType.Withdraw,
-                Date = DateTime.Now,
-                Description = _amount.ToString()
-            });
-            Bank.GetHistory()
-                .Add(new Operation
-                {
-                    Type = OperationType.Withdraw,
-                    Date = DateTime.Now,
-                    Description = _amount.ToString()
-                });
+           
         }
     }
 }

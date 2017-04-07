@@ -10,7 +10,7 @@ namespace Bank.Products
 {
     public class BankAccount : BankProduct
     {
-        private Debit Debit;
+        public Debit Debit { private set; get; }
 
         public BankAccount(Bank bank, int ownerId, IInterest interestSystem)
             : base(bank, ownerId, interestSystem)
@@ -19,21 +19,8 @@ namespace Bank.Products
 
         public void Deposit(double amount)
         {
-            if (amount <= 0) throw new IllegalOperationException();
-
-            if (Debit == null || (Debit != null && Debit.GetUnpaidDebit() == 0))
-                _amount += amount;
-            else if (Debit.GetUnpaidDebit() >= 0)
-            {
-                if (Debit.GetUnpaidDebit() >= amount)
-                    Debit.ReduceDebit(amount);
-                else
-                {
-                    var toDeposit = amount - Debit.GetUnpaidDebit();
-                    Debit.ReduceDebit(Debit.GetUnpaidDebit());
-                    _amount += toDeposit;
-                }
-            }
+           
+            new Commands.Deposit(this, amount).Execute();
 
             History.Add(new Operation
             {
@@ -53,15 +40,10 @@ namespace Bank.Products
             {
                 Type = OperationType.Withdraw,
                 Date = DateTime.Now,
-                Description = _amount.ToString()
+                Description = amount.ToString()
             });
             Bank.GetHistory()
-                .Add(new Operation
-                {
-                    Type = OperationType.Withdraw,
-                    Date = DateTime.Now,
-                    Description = _amount.ToString()
-                });
+                .Add(new Operation {Type = OperationType.Withdraw, Date = DateTime.Now, Description = amount.ToString()});
         }
 
         public void Transfer(double amount, BankAccount destination)
