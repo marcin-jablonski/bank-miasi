@@ -21,14 +21,14 @@ namespace Bank.Interfaces
 
         protected double _amount;
 
-        public BankProduct(Bank bank, int ownerId)
+        public BankProduct(Bank bank, int ownerId, IInterest interestSystem)
         {
             Bank = bank;
             _ownerId = ownerId;
             _id = bank.GetProducts().Count != 0 ? bank.GetProducts().Max(x => x.GetId()) + 1 : 1;
             _amount = 0;
             History = new List<Operation>();
-            Interest = new NoInterest();
+            Interest = interestSystem;
         }
 
         public double GetAccountState()

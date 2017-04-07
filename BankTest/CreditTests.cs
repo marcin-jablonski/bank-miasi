@@ -1,4 +1,5 @@
 ﻿using Bank.Exceptions;
+using Bank.Mechanisms.Interests;
 using Bank.Products;
 using Xunit;
 
@@ -10,9 +11,9 @@ namespace BankTest
         {
             const int ownerId = 1;
             var bank = new Bank.Bank();
-            _account = new BankAccount(bank, ownerId);
+            _account = new BankAccount(bank, ownerId, new NoInterest());
             bank.CreateBankProduct(_account);
-            _credit = new Credit(bank, _account);
+            _credit = new Credit(bank, _account, new NoInterest());
             bank.CreateBankProduct(_credit);
         }
 

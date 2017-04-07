@@ -13,7 +13,8 @@ namespace Bank.Products
 
         private bool _isActive;
 
-        public Deposit(Bank bank, BankAccount account, DateTime to, double amount) : base(bank, account.GetOwnerId())
+        public Deposit(Bank bank, BankAccount account, IInterest interestSystem, DateTime to, double amount) 
+            : base(bank, account.GetOwnerId(), interestSystem)
         {
             _amount = amount;
             _to = to;

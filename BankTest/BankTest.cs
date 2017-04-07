@@ -1,4 +1,5 @@
 using System;
+using Bank.Mechanisms.Interests;
 using Xunit;
 using Bank.Products;
 
@@ -19,7 +20,7 @@ namespace BankTest
         [Fact]
         public void ShouldCreateBankProduct()
         {
-            var bankProduct = new BankAccount(_bank, FirstOwnerId);
+            var bankProduct = new BankAccount(_bank, FirstOwnerId, new NoInterest());
             var account = _bank.CreateBankProduct(bankProduct);
             Assert.NotNull(account);
             Assert.Equal(account.GetOwnerId(), FirstOwnerId);
@@ -28,7 +29,7 @@ namespace BankTest
         [Fact]
         public void ShouldReturnBankProductForId()
         {
-            var bankProduct = new BankAccount(_bank, FirstOwnerId);
+            var bankProduct = new BankAccount(_bank, FirstOwnerId, new NoInterest());
             _bank.CreateBankProduct(bankProduct);
             var product = _bank.GetBankProduct(1);
             Assert.NotNull(product);
@@ -38,7 +39,7 @@ namespace BankTest
         [Fact]
         public void ShouldReturnProductsForOwner()
         {
-            var bankProduct = new BankAccount(_bank, SecondOwnerId);
+            var bankProduct = new BankAccount(_bank, SecondOwnerId, new NoInterest());
             for (var i = 0; i < 5; i++)
                 _bank.CreateBankProduct(bankProduct);
             var products = _bank.GetProductsByOwner(SecondOwnerId);

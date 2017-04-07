@@ -9,7 +9,8 @@ namespace Bank.Products
     {
         private BankAccount _account;
 
-        public Credit(Bank bank, BankAccount account) : base(bank, account.GetOwnerId())
+        public Credit(Bank bank, BankAccount account, IInterest interestSystem) 
+            : base(bank, account.GetOwnerId(), interestSystem)
         {
             _account = account;
         }

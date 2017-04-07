@@ -1,4 +1,5 @@
 ﻿using Bank.Exceptions;
+using Bank.Mechanisms.Interests;
 using Bank.Products;
 using Xunit;
 
@@ -9,8 +10,8 @@ namespace BankTest
         public BankAccountTest()
         {
             var bank = new Bank.Bank();
-            _bankAccount = new BankAccount(bank, 0);
-            _bankAccount2 = new BankAccount(bank, 1);
+            _bankAccount = new BankAccount(bank, 0, new NoInterest());
+            _bankAccount2 = new BankAccount(bank, 1, new NoInterest());
         }
 
         private readonly BankAccount _bankAccount;

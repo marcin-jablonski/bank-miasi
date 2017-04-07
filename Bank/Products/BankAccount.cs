@@ -11,9 +11,9 @@ namespace Bank.Products
     {
         private Debit Debit;
 
-        public BankAccount(Bank bank, int ownerId) : base(bank, ownerId)
+        public BankAccount(Bank bank, int ownerId, IInterest interestSystem) 
+            : base(bank, ownerId, interestSystem)
         {
-            
         }
 
         public void Deposit(double amount)

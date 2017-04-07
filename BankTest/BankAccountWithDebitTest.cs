@@ -1,4 +1,5 @@
 ﻿using Bank.Mechanisms;
+using Bank.Mechanisms.Interests;
 using Bank.Products;
 using Xunit;
 
@@ -9,7 +10,7 @@ namespace BankTest
         public BankAccountWithDebitTest()
         {
             var bank = new Bank.Bank();
-            _bankAccount = new BankAccount(bank, 0);
+            _bankAccount = new BankAccount(bank, 0, new NoInterest());
             _debit = new Debit(DebitLimit);
             _bankAccount.CreateDebit(_debit);
         }

@@ -13,7 +13,7 @@ namespace BankTest
         {
             const int ownerId = 1;
             _bank = new Bank.Bank();
-            _account = new Bank.Products.BankAccount(_bank, ownerId);
+            _account = new Bank.Products.BankAccount(_bank, ownerId, new NoInterest());
             _bank.CreateBankProduct(_account);
             
         }
@@ -23,7 +23,7 @@ namespace BankTest
         {
             var depositAmount = 2000;
             var depositEndDate = DateTime.Today + TimeSpan.FromDays(1);
-            var deposit = new Bank.Products.Deposit(_bank, _account, depositEndDate, depositAmount);
+            var deposit = new Bank.Products.Deposit(_bank, _account, new NoInterest(), depositEndDate, depositAmount);
             _bank.CreateBankProduct(deposit);
 
             deposit.CancelDeposit();
@@ -36,7 +36,7 @@ namespace BankTest
         {
             const int depositAmount = 2000;
             var depositEndDate = DateTime.Today + TimeSpan.FromDays(1);
-            var deposit = new Bank.Products.Deposit(_bank, _account, depositEndDate, depositAmount);
+            var deposit = new Bank.Products.Deposit(_bank, _account, new NoInterest(), depositEndDate, depositAmount);
             _bank.CreateBankProduct(deposit);
 
             deposit.ChangeInterestSystem(new _5PercentInterest());
@@ -50,7 +50,7 @@ namespace BankTest
         {
             const int depositAmount = 2000;
             var depositEndDate = DateTime.Today - TimeSpan.FromDays(1);
-            var deposit = new Bank.Products.Deposit(_bank, _account, depositEndDate, depositAmount);
+            var deposit = new Bank.Products.Deposit(_bank, _account, new NoInterest(), depositEndDate, depositAmount);
             _bank.CreateBankProduct(deposit);
 
             deposit.ChangeInterestSystem(new _5PercentInterest());
