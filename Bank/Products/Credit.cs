@@ -17,15 +17,15 @@ namespace Bank.Products
 
         public void GetMoney(double amount)
         {
-            _amount += amount;
+            Amount += amount;
             _account.Deposit(amount);
         }
 
         public void PayCreditInstallment()
         {
             ChargeInterest();
-            _account.Withdraw(_amount);
-            _amount = 0;
+            _account.Withdraw(Amount);
+            Amount = 0;
             History.Add(new Operation { Type = OperationType.CreditInstallmentPayment, Date = DateTime.Now, Description = "Installment payment for credit " + GetId() });
             Bank.GetHistory().Add(new Operation { Type = OperationType.CreditInstallmentPayment, Date = DateTime.Now, Description = "Installment payment for credit " + GetId() });
         }

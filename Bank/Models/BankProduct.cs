@@ -19,21 +19,21 @@ namespace Bank.Interfaces
 
         private IInterest Interest;
 
-        protected double _amount;
+        public double Amount { get; set; }
 
         public BankProduct(Bank bank, int ownerId, IInterest interestSystem)
         {
             Bank = bank;
             _ownerId = ownerId;
             _id = bank.GetProducts().Count != 0 ? bank.GetProducts().Max(x => x.GetId()) + 1 : 1;
-            _amount = 0;
+            Amount = 0;
             History = new List<Operation>();
             Interest = interestSystem;
         }
 
         public double GetAccountState()
         {
-            return _amount;
+            return Amount;
         }
 
         public void ChangeInterestSystem(IInterest interest)
@@ -45,10 +45,10 @@ namespace Bank.Interfaces
 
         public void ChargeInterest()
         {
-            var oldAmount = _amount;
-            _amount = Interest.ChargeInterest(_amount);
-            History.Add(new Operation { Type = OperationType.InterestCharge, Date = DateTime.Now, Description = (_amount - oldAmount).ToString() });
-            Bank.GetHistory().Add(new Operation { Type = OperationType.InterestCharge, Date = DateTime.Now, Description = (_amount - oldAmount).ToString() });
+            var oldAmount = Amount;
+            Amount = Interest.ChargeInterest(Amount);
+            History.Add(new Operation { Type = OperationType.InterestCharge, Date = DateTime.Now, Description = (Amount - oldAmount).ToString() });
+            Bank.GetHistory().Add(new Operation { Type = OperationType.InterestCharge, Date = DateTime.Now, Description = (Amount - oldAmount).ToString() });
         }
 
         public int GetId()

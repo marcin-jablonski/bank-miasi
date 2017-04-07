@@ -16,7 +16,7 @@ namespace Bank.Products
         public Deposit(Bank bank, BankAccount account, IInterest interestSystem, DateTime to, double amount) 
             : base(bank, account.GetOwnerId(), interestSystem)
         {
-            _amount = amount;
+            Amount = amount;
             _to = to;
             _isActive = true;
             _account = account;
@@ -26,7 +26,7 @@ namespace Bank.Products
         {
             if (_to < DateTime.Now)
                 ChargeInterest();
-            _account.Deposit(_amount);
+            _account.Deposit(Amount);
             _isActive = false;
 
             History.Add(new Operation { Type = OperationType.DepositCancellation, Date = DateTime.Now, Description = "Cancelled deposit id " + GetId() });

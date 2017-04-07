@@ -4,12 +4,13 @@ using Bank.Exceptions;
 using Bank.Interfaces;
 using Bank.Models;
 using Bank.Mechanisms;
+using Commands = Bank.Mechanisms.Commands;
 
 namespace Bank.Products
 {
     public class BankAccount : BankProduct
     {
-        private Debit Debit;
+        public Debit Debit { private set; get; }
 
         public BankAccount(Bank bank, int ownerId, IInterest interestSystem) 
             : base(bank, ownerId, interestSystem)
@@ -18,21 +19,7 @@ namespace Bank.Products
 
         public void Deposit(double amount)
         {
-            if (amount <= 0) throw new IllegalOperationException();
-
-            if (Debit == null || (Debit != null && Debit.GetUnpaidDebit() == 0))
-                _amount += amount;
-            else if (Debit.GetUnpaidDebit() >= 0)
-            {
-                if(Debit.GetUnpaidDebit() >= amount)
-                    Debit.ReduceDebit(amount);
-                else
-                {
-                    var toDeposit = amount - Debit.GetUnpaidDebit();
-                    Debit.ReduceDebit(Debit.GetUnpaidDebit());
-                    _amount += toDeposit;
-                }
-            }
+            new Commands.Deposit(this, amount).Execute();
 
             History.Add(new Operation {Type = OperationType.Deposit, Date = DateTime.Now, Description = amount.ToString()});
             Bank.GetHistory().Add(new Operation { Type = OperationType.Deposit, Date = DateTime.Now, Description = amount.ToString() });
@@ -42,14 +29,14 @@ namespace Bank.Products
         {
             if (amount <= 0) throw new IllegalOperationException();
 
-            if (_amount >= amount)
-                _amount -= amount;
+            if (Amount >= amount)
+                Amount -= amount;
             else if (Debit != null)
             {
-                var toGetFromDebit = amount - _amount;
+                var toGetFromDebit = amount - Amount;
                 if (Debit.GetAvailableDebit() >= toGetFromDebit)
                 {
-                    _amount = 0;
+                    Amount = 0;
                     Debit.IncreaseDebit(toGetFromDebit);
                 }
                 else
