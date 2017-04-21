@@ -11,30 +11,40 @@ namespace Bank
 {
     public class Bank
     {
-        private List<BankProduct> Products;
+        private readonly Guid BankId;
 
-        private IReporter Reporter;
+        private readonly List<Operation> History;
 
-        private List<Operation> History;
+        private readonly List<BankProduct> Products;
+
+        private readonly IReporter Reporter;
 
         public Bank()
         {
             Products = new List<BankProduct>();
             History = new List<Operation>();
             Reporter = new Reporter();
+            BankId = new Guid();
         }
 
         public BankProduct CreateBankProduct(BankProduct newProduct)
         {
             Products.Add(newProduct);
-            if(newProduct.GetType() == typeof (Deposit))
-            {
-                History.Add(new Operation { Date = DateTime.Now, Type = OperationType.DepositCreation, Description = "Deposit of " + newProduct.GetAccountState() + " created for owner " + newProduct.GetOwnerId() });
-            }
-            else if(newProduct.GetType() == typeof (Credit))
-            {
-                History.Add(new Operation { Date = DateTime.Now, Type = OperationType.CreditCreation, Description = "Credit created for owner " + newProduct.GetOwnerId() });
-            }
+            if (newProduct.GetType() == typeof(Deposit))
+                History.Add(new Operation
+                {
+                    Date = DateTime.Now,
+                    Type = OperationType.DepositCreation,
+                    Description =
+                        "Deposit of " + newProduct.GetAccountState() + " created for owner " + newProduct.GetOwnerId()
+                });
+            else if (newProduct.GetType() == typeof(Credit))
+                History.Add(new Operation
+                {
+                    Date = DateTime.Now,
+                    Type = OperationType.CreditCreation,
+                    Description = "Credit created for owner " + newProduct.GetOwnerId()
+                });
             return newProduct;
         }
 
@@ -62,6 +72,11 @@ namespace Bank
         public List<BankProduct> GetProducts()
         {
             return Products;
+        }
+
+        public Guid GetBankId()
+        {
+            return BankId;
         }
     }
 }

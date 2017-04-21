@@ -48,14 +48,7 @@ namespace Bank.Products
 
         public void Transfer(double amount, BankAccount destination)
         {
-            try
-            {
-                Withdraw(amount);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            Withdraw(amount);
 
             destination.Deposit(amount); // change possibly
             History.Add(new Operation

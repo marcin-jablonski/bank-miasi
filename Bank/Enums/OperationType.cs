@@ -2,6 +2,6 @@
 {
     public enum OperationType
     {
-        Deposit, Withdraw, Transfer, InterestCharge, InterestTypeChange, DepositCreation, DepositCancellation, CreditCreation, CreditInstallmentPayment, DebitCreation, ReportCreation
+        Deposit, Withdraw, Transfer, InterestCharge, InterestTypeChange, DepositCreation, DepositCancellation, CreditCreation, CreditInstallmentPayment, DebitCreation, ReportCreation, InterbankTransfer
     }
 }

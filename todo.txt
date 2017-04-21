@@ -1,0 +1,2 @@
+3cia operacja jako Command (Transfer) + testy
+Mediator- przelewy miêdzy bankowe i odrzucone przelewy miêdzybankowe + testy
