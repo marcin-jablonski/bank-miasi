@@ -23,7 +23,7 @@ namespace Bank.Products
         }
 
         public double GetAccountState()
-        {
+        {   
             throw new NotImplementedException();
         }
     }
