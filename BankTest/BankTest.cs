@@ -59,12 +59,5 @@ namespace BankTest
             var products = _bank.GetProductsByOwner(FirstOwnerId);
             Assert.Equal(0, products.Count);
         }
-
-        [Fact]
-        public void ShouldUpdateHistoryAfterReport()
-        {
-            _bank.CreateReport(bankProduct => true);
-            Assert.Equal(ExpectedHistorySize, _bank.GetHistory().Count);
-        }
     }
 }

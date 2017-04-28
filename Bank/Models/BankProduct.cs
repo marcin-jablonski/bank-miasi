@@ -1,5 +1,4 @@
 ﻿using Bank.Enums;
-using Bank.Mechanisms.Interests;
 using Bank.Models;
 using System;
 using System.Collections.Generic;
@@ -59,6 +58,11 @@ namespace Bank.Interfaces
         public int GetOwnerId()
         {
             return _ownerId;
+        }
+
+        public void Accept(IVisitor visitor)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -8,7 +8,7 @@ using Commands = Bank.Mechanisms.Commands;
 
 namespace Bank.Products
 {
-    public class BankAccount : BankProduct, IElement
+    public class BankAccount : BankProduct
     {
         public Debit Debit { private set; get; }
 
@@ -84,7 +84,7 @@ namespace Bank.Products
                 });
         }
 
-        public void Accept(IVisitor visitor)
+        public new void Accept(IVisitor visitor)
         {
             visitor.Visit(this);
         }

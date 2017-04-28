@@ -4,6 +4,7 @@ using System.Linq;
 using Bank.Enums;
 using Bank.Interfaces;
 using Bank.Mechanisms;
+using Bank.Mechanisms.Visitors;
 using Bank.Models;
 using Bank.Products;
 
@@ -17,13 +18,10 @@ namespace Bank
 
         private readonly List<BankProduct> Products;
 
-        private readonly IReporter Reporter;
-
         public Bank()
         {
             Products = new List<BankProduct>();
             History = new List<Operation>();
-            Reporter = new Reporter();
             BankId = new Guid();
         }
 
@@ -48,10 +46,42 @@ namespace Bank
             return newProduct;
         }
 
-        public void CreateReport(Func<BankProduct, bool> filter)
+        public void CreateAggregativeReport()
         {
-            Reporter.CreateReport(Products, filter);
-            History.Add(new Operation {Type = OperationType.ReportCreation, Date = DateTime.Now, Description = "Report"});
+            AggregativeVisitor visitor = new AggregativeVisitor();
+            foreach (var product in Products)
+            {
+                product.Accept(visitor);
+            }
+
+            //TODO do something with result
+            History.Add(new Operation { Type = OperationType.ReportCreation, Date = DateTime.Now, Description = "Aggregative report" });
+
+        }
+
+        public double CreateCumulativeReport()
+        {
+            CumulativeVisitor visitor = new CumulativeVisitor();
+            foreach (var product in Products)
+            {
+                product.Accept(visitor);
+            }
+
+            History.Add(new Operation { Type = OperationType.ReportCreation, Date = DateTime.Now, Description = "Cumulative report" });
+            return visitor.Result;
+        }
+
+        public void CreateThirdReport()
+        {
+            ThirdVisitor visitor = new ThirdVisitor();
+            foreach (var product in Products)
+            {
+                product.Accept(visitor);
+            }
+
+            //TODO result hadle
+            History.Add(new Operation { Type = OperationType.ReportCreation, Date = DateTime.Now, Description = "Third report" });
+
         }
 
         public BankProduct GetBankProduct(int productId)

@@ -5,7 +5,7 @@ using System;
 
 namespace Bank.Products
 {
-    public class Credit : BankProduct, IElement
+    public class Credit : BankProduct
     {
         private BankAccount _account;
 
@@ -30,7 +30,7 @@ namespace Bank.Products
             Bank.GetHistory().Add(new Operation { Type = OperationType.CreditInstallmentPayment, Date = DateTime.Now, Description = "Installment payment for credit " + GetId() });
         }
 
-        public void Accept(IVisitor visitor)
+        public new void Accept(IVisitor visitor)
         {
             visitor.Visit(this);
         }
