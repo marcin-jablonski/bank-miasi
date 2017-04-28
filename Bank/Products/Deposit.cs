@@ -5,7 +5,7 @@ using System;
 
 namespace Bank.Products
 {
-    public class Deposit : BankProduct
+    public class Deposit : BankProduct, IElement
     {
         private BankAccount _account;
 
@@ -31,6 +31,11 @@ namespace Bank.Products
 
             History.Add(new Operation { Type = OperationType.DepositCancellation, Date = DateTime.Now, Description = "Cancelled deposit id " + GetId() });
             Bank.GetHistory().Add(new Operation { Type = OperationType.DepositCancellation, Date = DateTime.Now, Description = "Cancelled deposit id " + GetId() });
+        }
+
+        public void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }
