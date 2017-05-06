@@ -9,7 +9,7 @@ namespace Bank.Mechanisms.Kir
 {
     public class ElixirTransferOperation
     {
-        public void Transfer(List<Bank> knownBanks, string sourceAccountId, string accountId, double amount)
+        public void Transfer(List<Bank> knownBanks, string sourceAccountId, string destinationAccountId, double amount)
         {
             BankAccount sourceAccount = null;
             BankAccount destinationAccount = null;
@@ -19,46 +19,30 @@ namespace Bank.Mechanisms.Kir
             foreach (var bank in knownBanks)
             {
                 var bankId = bank.GetBankId().ToString();
-                if (!sourceAccountId.Contains(bankId)) continue;
-                Console.WriteLine("source acc id: " + sourceAccountId);
-                sourceAccount =
-                    (BankAccount) bank.GetBankProduct(int.Parse(sourceAccountId.Replace(bankId, string.Empty)));
-                sourceBank = bank;
-                break;
-            }
 
-            if (sourceAccount == null)
-                throw new NoSuchBankAccountException();
-
-            foreach (var bank in knownBanks)
-            {
-                var bankId = bank.GetBankId().ToString();
-                if (!accountId.Contains(bankId)) continue;
-                Console.WriteLine("destination acc id: " + accountId);
-
-                destinationAccount =
-                    (BankAccount) bank.GetBankProduct(int.Parse(accountId.Replace(bankId, string.Empty)));
-                destinationBank = bank;
-                break;
-            }
-
-            if (destinationAccount == null)
-            {
-                var failedElixirOperation = new Operation
+                if (sourceAccountId.Contains(bankId))
                 {
-                    Type = OperationType.FailedInterbankTransfer,
-                    Date = DateTime.Now,
-                    Description = amount.ToString()
-                };
+                    sourceAccount =
+                        (BankAccount) bank.GetBankProduct(int.Parse(sourceAccountId.Replace(bankId, string.Empty)));
+                    sourceBank = bank;
+                }
+                if (destinationAccountId.Contains(bankId))
+                {
+                    destinationAccount =
+                        (BankAccount)bank.GetBankProduct(int.Parse(destinationAccountId.Replace(bankId, string.Empty)));
+                    destinationBank = bank;
+                }
+            }
 
-                sourceBank.GetHistory().Add(failedElixirOperation);
+            if (sourceAccount == null || destinationAccount == null)
+            {
                 throw new NoSuchBankAccountException();
             }
 
             try
             {
-                sourceAccount.Withdraw(amount);
-                destinationAccount.Deposit(amount);
+            sourceAccount.Withdraw(amount);
+            destinationAccount.Deposit(amount);
             }
             catch (Exception)
             {
@@ -71,6 +55,7 @@ namespace Bank.Mechanisms.Kir
 
                 sourceBank.GetHistory().Add(failedElixirOperation);
                 destinationBank.GetHistory().Add(failedElixirOperation);
+                return;
             }
 
             var elixirOperation = new Operation

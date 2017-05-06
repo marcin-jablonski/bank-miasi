@@ -1,4 +1,5 @@
-﻿using Bank.Exceptions;
+﻿using System.Diagnostics;
+using Bank.Exceptions;
 using Bank.Mechanisms.Interests;
 using Bank.Mechanisms.Kir;
 using Bank.Products;
@@ -12,7 +13,9 @@ namespace BankTest
         {
             var bank = new Bank.Bank();
             _bankAccount = new BankAccount(bank, 0, new NoInterest());
+            bank.GetProducts().Add(_bankAccount);
             _bankAccount2 = new BankAccount(bank, 1, new NoInterest());
+            bank.GetProducts().Add(_bankAccount2);
             Kir.AddBank(bank);
         }
 

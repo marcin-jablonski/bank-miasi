@@ -31,7 +31,7 @@ namespace Bank.Interfaces
             Amount = 0;
             History = new List<Operation>();
             Interest = interestSystem;
-            _identificator = Concat(bank.GetBankId().ToString(), _id);
+            _identificator = Concat(bank.GetBankId().ToString(), _id.ToString());
         }
 
         public double GetAccountState()

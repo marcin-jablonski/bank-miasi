@@ -49,10 +49,10 @@ namespace Bank.Products
 
         public void Transfer(double amount, BankAccount destination)
         {
-            Kir.Transfer(this.GetIdentificator(), destination.GetIdentificator(), amount);
+            Kir.Transfer(GetIdentificator(), destination.GetIdentificator(), amount);
 
+            //before Kir transfer
 //            Withdraw(amount);
-
 //            destination.Deposit(amount); // change possibly
             History.Add(new Operation
             {
