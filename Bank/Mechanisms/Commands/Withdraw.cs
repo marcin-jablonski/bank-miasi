@@ -24,7 +24,7 @@ namespace Bank.Mechanisms.Commands
             if (_amount <= 0) throw new IllegalOperationException();
 
             if (_account.GetAccountState() >= _amount)
-                _amount -= _amount;
+                _account.Amount -= _amount;
             else if (_account.Debit != null)
             {
                 var toGetFromDebit = _amount - _amount;

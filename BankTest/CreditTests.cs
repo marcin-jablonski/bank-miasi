@@ -1,5 +1,6 @@
 ﻿using Bank.Exceptions;
 using Bank.Mechanisms.Interests;
+using Bank.Mechanisms.Kir;
 using Bank.Products;
 using Xunit;
 
@@ -15,6 +16,7 @@ namespace BankTest
             bank.CreateBankProduct(_account);
             _credit = new Credit(bank, _account, new NoInterest());
             bank.CreateBankProduct(_credit);
+            Kir.AddBank(bank);
         }
 
         private readonly BankAccount _account;

@@ -4,6 +4,7 @@ using Bank.Exceptions;
 using Bank.Interfaces;
 using Bank.Models;
 using Bank.Mechanisms;
+using Bank.Mechanisms.Kir;
 using Commands = Bank.Mechanisms.Commands;
 
 namespace Bank.Products
@@ -48,9 +49,11 @@ namespace Bank.Products
 
         public void Transfer(double amount, BankAccount destination)
         {
-            Withdraw(amount);
+            Kir.Transfer(this.GetIdentificator(), destination.GetIdentificator(), amount);
 
-            destination.Deposit(amount); // change possibly
+//            Withdraw(amount);
+
+//            destination.Deposit(amount); // change possibly
             History.Add(new Operation
             {
                 Type = OperationType.Transfer,
