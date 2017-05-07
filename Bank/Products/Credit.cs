@@ -34,5 +34,10 @@ namespace Bank.Products
         {
             visitor.Visit(this);
         }
+
+        public double GetInstallment()
+        {
+            return Interest.ChargeInterest(Amount);
+        }
     }
 }

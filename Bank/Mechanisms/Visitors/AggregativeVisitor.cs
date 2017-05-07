@@ -1,23 +1,32 @@
 ﻿using Bank.Interfaces;
+using Bank.Mechanisms.Decorators;
 using Bank.Products;
 
 namespace Bank.Mechanisms.Visitors
 {
     public class AggregativeVisitor : IVisitor
     {
-        public void Visit(BankAccount account)
+        public double AccountStates { get; private set; }
+        public double TotalDebit { get; private set; }
+        public double TotalDeposits { get; private set; }
+        public double TotalCredits { get; private set; }
+        public double TotalInstallmentIncomes { get; private set; }
+
+        public void Visit(BankProductDecorator account)
         {
-            throw new System.NotImplementedException();
+            AccountStates += account.GetAccountState();
+            TotalDebit += account.GetType() == typeof(DebitAccount) ? ((DebitAccount) account).Debit.GetUnpaidDebit() : 0;
         }
 
         public void Visit(Deposit account)
         {
-            throw new System.NotImplementedException();
+            TotalDeposits += account.Amount;
         }
 
         public void Visit(Credit account)
         {
-            throw new System.NotImplementedException();
+            TotalCredits += account.Amount;
+            TotalInstallmentIncomes += account.GetInstallment() - account.Amount;
         }
     }
 }

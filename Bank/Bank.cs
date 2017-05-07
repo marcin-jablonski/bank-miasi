@@ -55,7 +55,12 @@ namespace Bank
                 product.Accept(visitor);
             }
 
-            //TODO do something with result
+            Console.WriteLine("Money on accounts: {0}", visitor.AccountStates);
+            Console.WriteLine("Total customers debit: {0}", visitor.TotalDebit);
+            Console.WriteLine("Total credit taken by customers: {0}", visitor.TotalCredits);
+            Console.WriteLine("Total income from installments at this moment: {0}", visitor.TotalInstallmentIncomes);
+            Console.WriteLine("Total money in deposits: {0}", visitor.TotalDeposits);
+
             History.Add(new Operation { Type = OperationType.ReportCreation, Date = DateTime.Now, Description = "Aggregative report" });
 
         }
@@ -68,19 +73,25 @@ namespace Bank
                 product.Accept(visitor);
             }
 
+            Console.WriteLine("Total money in bank: {0}", visitor.Result);
+
             History.Add(new Operation { Type = OperationType.ReportCreation, Date = DateTime.Now, Description = "Cumulative report" });
             return visitor.Result;
         }
 
-        public void CreateThirdReport()
+        public void CreateAccountInfoReport()
         {
-            ThirdVisitor visitor = new ThirdVisitor();
+            AccountsInfoVisitor visitor = new AccountsInfoVisitor();
             foreach (var product in Products)
             {
                 product.Accept(visitor);
             }
 
-            //TODO result hadle
+            Console.WriteLine("All accounts: {0}", visitor.TotalAccounts);
+            Console.WriteLine("Accounts with debit: {0}", visitor.DebitAccounts);
+            Console.WriteLine("All deposits: {0}", visitor.DepositAccounts);
+            Console.WriteLine("All credits: {0}", visitor.CreditAccounts);
+
             History.Add(new Operation { Type = OperationType.ReportCreation, Date = DateTime.Now, Description = "Third report" });
 
         }

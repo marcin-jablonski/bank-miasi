@@ -19,7 +19,7 @@ namespace Bank.Interfaces
 
         protected Bank Bank;
 
-        private IInterest Interest;
+        protected IInterest Interest;
 
         public double Amount { get; set; }
 

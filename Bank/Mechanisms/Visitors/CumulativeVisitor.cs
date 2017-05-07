@@ -1,4 +1,5 @@
 ﻿using Bank.Interfaces;
+using Bank.Mechanisms.Decorators;
 using Bank.Products;
 
 namespace Bank.Mechanisms.Visitors
@@ -7,9 +8,11 @@ namespace Bank.Mechanisms.Visitors
     {
         public double Result { get; private set; }
 
-        public void Visit(BankAccount account)
+        public void Visit(BankProductDecorator account)
         {
-            Result += account.Amount;
+            if (account.GetType() == typeof(DebitAccount))
+                Result -= ((DebitAccount) account).Debit.GetUnpaidDebit();
+            Result += account.GetAccountState();
         }
 
         public void Visit(Deposit account)
@@ -19,7 +22,7 @@ namespace Bank.Mechanisms.Visitors
 
         public void Visit(Credit account)
         {
-            Result += account.Amount;
+            Result -= account.Amount;
         }
     }
 }
