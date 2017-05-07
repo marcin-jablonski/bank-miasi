@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Bank.Exceptions
 {
-    class NoSuchBankAccountException : Exception
+    public class NoSuchBankProductException : Exception
     {
     }
 }

@@ -34,7 +34,7 @@ namespace BankTest
 
             var bank2 = new Bank.Bank();
             //output.WriteLine("bank2id:"+ bank2.GetBankId().ToString());
-            _bank2Account = new BankAccount(bank2, 3, new NoInterest()); //todo change id to 0
+            _bank2Account = new BankAccount(bank2, 0, new NoInterest()); //todo change id to 0
             bank2.GetProducts().Add(_bank2Account);
             Kir.AddBank(bank2);
 
@@ -63,6 +63,8 @@ namespace BankTest
             Assert.Equal(DepositAmount - AmountToTransfer, _bank1Account.GetAccountState());
             Assert.Equal(AmountToTransfer, _bank2Account.GetAccountState());
         }
+
+
 
 
 

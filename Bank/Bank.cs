@@ -7,6 +7,7 @@ using Bank.Mechanisms;
 using Bank.Mechanisms.Visitors;
 using Bank.Models;
 using Bank.Products;
+using Bank.Exceptions;
 
 namespace Bank
 {
@@ -86,7 +87,14 @@ namespace Bank
 
         public BankProduct GetBankProduct(int productId)
         {
-            return Products.First(x => x.GetId() == productId);
+            try
+            {
+               return Products.First(x => x.GetId() == productId);
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new NoSuchBankProductException();
+            }
         }
 
         public List<BankProduct> GetProductsByOwner(int ownerId)
