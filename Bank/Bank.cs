@@ -22,7 +22,7 @@ namespace Bank
         {
             Products = new List<BankProduct>();
             History = new List<Operation>();
-            BankId = new Guid();
+            BankId = Guid.NewGuid();
         }
 
         public BankProduct CreateBankProduct(BankProduct newProduct)
