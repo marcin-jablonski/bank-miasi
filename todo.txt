@@ -1,4 +1,0 @@
-3cia operacja jako Command (Transfer) + testy
-Mediator- testy
-Dekorator- DebitAccount(BankAccount) - konta debetowe opakowuj¹ce konta bankowe + testy
-Poprawiæ command withdraw
