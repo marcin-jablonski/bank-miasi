@@ -32,7 +32,7 @@ namespace Bank.Products
 
         public override void Accept(IVisitor visitor)
         {
-            bankProduct.Accept(visitor);
+            visitor.Visit(this);
         }
 
         public override void Withdraw(double amount)
