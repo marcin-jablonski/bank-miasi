@@ -27,10 +27,10 @@ namespace Bank.Mechanisms.Commands
                 _account.Amount -= _amount;
             else if (_account.Debit != null)
             {
-                var toGetFromDebit = _amount - _amount;
+                var toGetFromDebit = _amount - _account.Amount;
                 if (_account.Debit.GetAvailableDebit() >= toGetFromDebit)
                 {
-                    _amount = 0;
+                    _account.Amount = 0;
                     _account.Debit.IncreaseDebit(toGetFromDebit);
                 }
                 else

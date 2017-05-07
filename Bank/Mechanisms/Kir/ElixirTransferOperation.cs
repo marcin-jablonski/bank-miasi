@@ -34,11 +34,6 @@ namespace Bank.Mechanisms.Kir
                 }
             }
 
-            if (sourceAccount == null || destinationAccount == null)
-            {
-                throw new NoSuchBankAccountException();
-            }
-
             try
             {
             sourceAccount.Withdraw(amount);
