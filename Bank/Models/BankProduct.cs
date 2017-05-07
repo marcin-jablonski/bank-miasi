@@ -3,6 +3,7 @@ using Bank.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static System.String;
 
 namespace Bank.Interfaces
 {
@@ -11,6 +12,8 @@ namespace Bank.Interfaces
         private readonly int _id;
 
         private readonly int _ownerId;
+
+        private string _identificator;
 
         protected List<Operation> History;
 
@@ -33,6 +36,7 @@ namespace Bank.Interfaces
             Amount = 0;
             History = new List<Operation>();
             Interest = interestSystem;
+            _identificator = Concat(bank.GetBankId().ToString(), _id.ToString());
         }
 
         public double GetAccountState()
@@ -63,6 +67,11 @@ namespace Bank.Interfaces
         public int GetOwnerId()
         {
             return _ownerId;
+        }
+
+        public string GetIdentificator()
+        {
+            return _identificator;
         }
 
         public Bank GetBank()

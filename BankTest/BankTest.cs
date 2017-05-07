@@ -2,6 +2,7 @@ using System;
 using Bank.Mechanisms.Interests;
 using Xunit;
 using Bank.Products;
+using Bank.Exceptions;
 
 namespace BankTest
 {
@@ -50,7 +51,7 @@ namespace BankTest
         [Fact]
         public void ShouldThrowExceptionOnGetProductWithEmptyBank()
         {
-            Assert.Throws(typeof(InvalidOperationException), () => _bank.GetBankProduct(1));
+            Assert.Throws(typeof(NoSuchBankProductException), () => _bank.GetBankProduct(1));
         }
 
         [Fact]
