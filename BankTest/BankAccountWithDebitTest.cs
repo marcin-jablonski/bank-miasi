@@ -1,4 +1,5 @@
 ﻿using Bank.Mechanisms;
+using Bank.Mechanisms.Decorators;
 using Bank.Mechanisms.Interests;
 using Bank.Products;
 using Xunit;
@@ -12,10 +13,10 @@ namespace BankTest
             var bank = new Bank.Bank();
             _bankAccount = new BankAccount(bank, 0, new NoInterest());
             _debit = new Debit(DebitLimit);
-            _bankAccount.CreateDebit(_debit);
+            _bankAccount = new DebitAccount(_bankAccount, _debit);
         }
 
-        private readonly BankAccount _bankAccount;
+        private readonly BankProductDecorator _bankAccount;
         private readonly Debit _debit;
         private const double ToWithdraw = 40.31;
         private const double DepositAmount = 50.00;
@@ -25,8 +26,7 @@ namespace BankTest
         [Fact]
         public void ShouldReduceDebitByDeposit()
         {
-            _debit.IncreaseDebit(DebitToIncrease); //100
-            _bankAccount.CreateDebit(_debit);
+            _bankAccount.Withdraw(DebitToIncrease);
             _bankAccount.Deposit(DepositAmount); //50
 
             const double expectedAmount = 0.00;
@@ -40,8 +40,7 @@ namespace BankTest
         public void ShouldReduceDebitByDepositAndDeposit()
         {
             const double depositAmount2 = DebitToIncrease + DepositAmount; //150
-            _debit.IncreaseDebit(DebitToIncrease); //100
-            _bankAccount.CreateDebit(_debit);
+            _bankAccount.Withdraw(DebitToIncrease); //100
             _bankAccount.Deposit(depositAmount2); //150
 
             Assert.Equal(0.00, _debit.GetUnpaidDebit());

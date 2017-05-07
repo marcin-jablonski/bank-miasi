@@ -33,7 +33,7 @@ namespace Bank.Products
             Bank.GetHistory().Add(new Operation { Type = OperationType.DepositCancellation, Date = DateTime.Now, Description = "Cancelled deposit id " + GetId() });
         }
 
-        public new void Accept(IVisitor visitor)
+        public override void Accept(IVisitor visitor)
         {
             visitor.Visit(this);
         }

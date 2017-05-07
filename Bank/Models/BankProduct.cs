@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace Bank.Interfaces
 {
-    public class BankProduct
+    public abstract class BankProduct
     {
-        private int _id;
+        private readonly int _id;
 
-        private int _ownerId;
+        private readonly int _ownerId;
 
         protected List<Operation> History;
 
@@ -20,7 +20,12 @@ namespace Bank.Interfaces
 
         public double Amount { get; set; }
 
-        public BankProduct(Bank bank, int ownerId, IInterest interestSystem)
+        protected BankProduct()
+        {
+            
+        }
+
+        protected BankProduct(Bank bank, int ownerId, IInterest interestSystem)
         {
             Bank = bank;
             _ownerId = ownerId;
@@ -60,9 +65,16 @@ namespace Bank.Interfaces
             return _ownerId;
         }
 
-        public void Accept(IVisitor visitor)
+        public Bank GetBank()
         {
-            throw new NotImplementedException();
+            return Bank;
         }
+
+        public List<Operation> GetHistory()
+        {
+            return History;
+        }
+
+        public abstract void Accept(IVisitor visitor);
     }
 }

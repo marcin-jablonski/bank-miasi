@@ -30,7 +30,7 @@ namespace Bank.Products
             Bank.GetHistory().Add(new Operation { Type = OperationType.CreditInstallmentPayment, Date = DateTime.Now, Description = "Installment payment for credit " + GetId() });
         }
 
-        public new void Accept(IVisitor visitor)
+        public override void Accept(IVisitor visitor)
         {
             visitor.Visit(this);
         }

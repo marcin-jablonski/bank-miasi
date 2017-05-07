@@ -4,20 +4,20 @@ using Bank.Exceptions;
 using Bank.Interfaces;
 using Bank.Models;
 using Bank.Mechanisms;
+using Bank.Mechanisms.Decorators;
 using Commands = Bank.Mechanisms.Commands;
 
 namespace Bank.Products
 {
-    public class BankAccount : BankProduct
+    public class BankAccount : BankProductDecorator
     {
-        public Debit Debit { private set; get; }
 
         public BankAccount(Bank bank, int ownerId, IInterest interestSystem)
             : base(bank, ownerId, interestSystem)
         {
         }
 
-        public void Deposit(double amount)
+        public override void Deposit(double amount)
         {
            
             new Commands.Deposit(this, amount).Execute();
@@ -32,7 +32,7 @@ namespace Bank.Products
                 .Add(new Operation {Type = OperationType.Deposit, Date = DateTime.Now, Description = amount.ToString()});
         }
 
-        public void Withdraw(double amount)
+        public override void Withdraw(double amount)
         {
             new Commands.Withdraw(this, amount).Execute();
 
@@ -66,27 +66,14 @@ namespace Bank.Products
                 });
         }
 
-        public void CreateDebit(Debit debit)
-        {
-            Debit = debit;
-            History.Add(new Operation
-            {
-                Type = OperationType.DebitCreation,
-                Date = DateTime.Now,
-                Description = debit.GetLimit().ToString()
-            });
-            Bank.GetHistory()
-                .Add(new Operation
-                {
-                    Type = OperationType.DebitCreation,
-                    Date = DateTime.Now,
-                    Description = debit.GetLimit().ToString()
-                });
-        }
-
-        public new void Accept(IVisitor visitor)
+        public override void Accept(IVisitor visitor)
         {
             visitor.Visit(this);
+        }
+
+        public override double GetAccountState()
+        {
+            return Amount;
         }
     }
 }

@@ -24,26 +24,11 @@ namespace Bank.Mechanisms.Commands
             if (_amount <= 0) throw new IllegalOperationException();
 
             if (_account.GetAccountState() >= _amount)
-                _amount -= _amount;
-            else if (_account.Debit != null)
-            {
-                var toGetFromDebit = _amount - _amount;
-                if (_account.Debit.GetAvailableDebit() >= toGetFromDebit)
-                {
-                    _amount = 0;
-                    _account.Debit.IncreaseDebit(toGetFromDebit);
-                }
-                else
-                {
-                    throw new NotEnoughFundsException();
-                }
-            }
+                _account.Amount -= _amount;
             else
             {
                 throw new NotEnoughFundsException();
             }
-
-           
         }
     }
 }
