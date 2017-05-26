@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bank.Enums;
-using Bank.Exceptions;
+using Bank.Mechanisms.Aspects;
 using Bank.Models;
 using Bank.Products;
 
@@ -9,6 +9,7 @@ namespace Bank.Mechanisms.Kir
 {
     public class ElixirTransferOperation
     {
+        [ProvisionAspect]
         public void Transfer(List<Bank> knownBanks, string sourceAccountId, string destinationAccountId, double amount)
         {
             BankAccount sourceAccount = null;

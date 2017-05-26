@@ -11,5 +11,12 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="PostSharp" Version="5.0.22-preview">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="PostSharp.Redist" Version="5.0.22-preview" />
+  </ItemGroup>
 
 </Project>

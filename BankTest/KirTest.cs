@@ -38,7 +38,7 @@ namespace BankTest
             _bank1Account.Deposit(DepositAmount);
             _bank1Account.Transfer(AmountToTransfer, _bank1Account2);
 
-            Assert.Equal(DepositAmount - AmountToTransfer, _bank1Account.GetAccountState());
+            Assert.Equal(DepositAmount - AmountToTransfer - 2 , _bank1Account.GetAccountState());
             Assert.Equal(AmountToTransfer, _bank1Account2.GetAccountState());
         }
 
@@ -48,7 +48,7 @@ namespace BankTest
             _bank1Account.Deposit(DepositAmount);
             _bank1Account.Transfer(AmountToTransfer, _bank2Account);
 
-            Assert.Equal(DepositAmount - AmountToTransfer, _bank1Account.GetAccountState());
+            Assert.Equal(DepositAmount - AmountToTransfer - 2, _bank1Account.GetAccountState());
             Assert.Equal(AmountToTransfer, _bank2Account.GetAccountState());
         }
     }

@@ -43,7 +43,7 @@ namespace BankTest
                 AmountToTransfer
                 );
 
-            Assert.Equal(DepositAmount - AmountToTransfer, _bank1Account.GetAccountState());
+            Assert.Equal(DepositAmount - AmountToTransfer - 2, _bank1Account.GetAccountState());
             Assert.Equal(AmountToTransfer, _bank2Account.GetAccountState());
         }
 
